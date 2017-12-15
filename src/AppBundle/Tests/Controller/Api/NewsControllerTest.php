@@ -1,0 +1,176 @@
+<?php
+
+namespace AppBundle\Tests\Controller\Api;
+
+use AppBundle\Entity\News;
+use AppBundle\Test\ApiTestCase;
+
+class NewsControllerTest extends ApiTestCase
+{
+    protected function setUp()
+    {
+        parent::setUp();
+
+    }
+
+    public function testPOST()
+    {
+        $data = [
+            'title' => 'Great news everybody',
+            'text' => 'This is a great story.',
+            'link' => 'www.jobboardspro.com',
+            'rang' => 1,
+            'show_rec' => 1
+        ];
+
+        $response = $this->client->post('/api/news', [
+            'body' => json_encode($data)
+        ]);
+
+        $finishedData = json_decode($response->getBody(true), true);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertTrue($response->hasHeader('Location'));
+        $this->assertArrayHasKey('title', $finishedData);
+        $this->assertEquals('Great news everybody', $finishedData['title']);
+    }
+
+    public function testGET()
+    {
+        $data = [
+            'title' => 'Great news everybody',
+            'text' => 'This is a great story.',
+            'link' => 'www.jobboardspro.com',
+            'rang' => 1,
+            'show_rec' => 1,
+            'date_posted' => new \DateTime()
+        ];
+
+        /** @var News $news */
+        $news = $this->createNews($data);
+        $id = $news->getId();
+
+        $response = $this->client->get('/api/news/' . $id);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->asserter()->assertResponsePropertiesExist($response, array(
+            'title',
+            'text',
+            'link',
+            'rang',
+            'show_rec'
+        ));
+        $this->asserter()->assertResponsePropertyEquals($response, 'title', 'Great news everybody');
+    }
+
+    public function testGETNewsCollection()
+    {
+        $this->createNews(
+            [
+                'title' => 'Great news everybody',
+                'text' => 'This is a great story.',
+                'link' => 'www.jobboardspro.com',
+                'rang' => 1,
+                'show_rec' => 1,
+                'date_posted' => new \DateTime()
+            ]
+        );
+
+        $this->createNews(
+            [
+                'title' => 'This is cool title',
+                'text' => 'Text should be long',
+                'link' => 'www.yahoo.com',
+                'rang' => 2,
+                'show_rec' => 1,
+                'date_posted' => new \DateTime()
+            ]
+        );
+
+        $response = $this->client->get('/api/news');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->asserter()->assertResponsePropertyIsArray($response, 'news');
+        $this->asserter()->assertResponsePropertyCount($response, 'news', 2);
+        $this->asserter()->assertResponsePropertyEquals($response, 'news[1].title', 'This is cool title');
+    }
+
+    public function testPUT()
+    {
+        /** @var News $news */
+        $news = $this->createNews(
+            [
+                'title' => 'Great news everybody',
+                'text' => 'This is a great story.',
+                'link' => 'www.jobboardspro.com',
+                'rang' => 1,
+                'show_rec' => 1,
+                'date_posted' => new \DateTime()
+            ]
+        );
+        $id = $news->getId();
+
+        $data = [
+            'title' => 'New Title for this news',
+            'text' => 'This is a great story.',
+            'link' => 'www.jobboardspro.com',
+            'rang' => 1,
+            'show_rec' => 1,
+            'date_posted' => new \DateTime()
+        ];
+
+        $response = $this->client->put('/api/news/' . $id, [
+            'body' => json_encode($data)
+        ]);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->asserter()->assertResponsePropertyEquals($response, 'rang', 1);
+    }
+
+    public function testPATCH()
+    {
+        /** @var News $news */
+        $news = $this->createNews(
+            [
+                'title' => 'Great news everybody',
+                'text' => 'This is a great story.',
+                'link' => 'www.jobboardspro.com',
+                'rang' => 1,
+                'show_rec' => 1,
+                'date_posted' => new \DateTime()
+            ]
+        );
+        $id = $news->getId();
+
+        $data = [
+            'rang' => 2
+        ];
+
+        $response = $this->client->patch('/api/news/' . $id, [
+            'body' => json_encode($data)
+        ]);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->asserter()->assertResponsePropertyEquals($response, 'rang', 2);
+        $this->asserter()->assertResponsePropertyEquals($response, 'title', 'Great news everybody');
+    }
+
+    public function testDelete()
+    {
+        /** @var News $news */
+        $news = $this->createNews(
+            [
+                'title' => 'Great news everybody',
+                'text' => 'This is a great story.',
+                'link' => 'www.jobboardspro.com',
+                'rang' => 1,
+                'show_rec' => 1,
+                'date_posted' => new \DateTime()
+            ]
+        );
+        $id = $news->getId();
+        $response = $this->client->delete('/api/news/' . $id);
+        $this->assertEquals(204, $response->getStatusCode());
+    }
+
+}
