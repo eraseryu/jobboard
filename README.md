@@ -1,12 +1,12 @@
 jobboard
 ========
 
-About
+About:
 Open source job board built using Symfony PHP Framework
 
-Author
+Author:
 Milan Petrovic (eraser_yu@yahoo.com)
 
-Stacks used
+Stack used:
 Symfony 3.4.1 PHP Framework
 
