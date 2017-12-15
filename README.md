@@ -1,4 +1,12 @@
 jobboard
 ========
 
-A Symfony project created on December 13, 2017, 11:57 am.
+About
+Open source job board built using Symfony PHP Framework
+
+Author
+Milan Petrovic (eraser_yu@yahoo.com)
+
+Stacks used
+Symfony 3.4.1 PHP Framework
+
