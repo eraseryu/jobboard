@@ -115,8 +115,7 @@ class NewsControllerTest extends ApiTestCase
             'text' => 'This is a great story.',
             'link' => 'www.jobboardspro.com',
             'rang' => 1,
-            'show_rec' => 1,
-            'date_posted' => new \DateTime()
+            'show_rec' => 1
         ];
 
         $response = $this->client->put('/api/news/' . $id, [
@@ -155,7 +154,7 @@ class NewsControllerTest extends ApiTestCase
         $this->asserter()->assertResponsePropertyEquals($response, 'title', 'Great news everybody');
     }
 
-    public function testDelete()
+    public function testDELETE()
     {
         /** @var News $news */
         $news = $this->createNews(
@@ -171,6 +170,57 @@ class NewsControllerTest extends ApiTestCase
         $id = $news->getId();
         $response = $this->client->delete('/api/news/' . $id);
         $this->assertEquals(204, $response->getStatusCode());
+    }
+
+    public function testValidationErrors()
+    {
+        //title is missing
+        $data = [
+            'text' => 'This is a great story.',
+            'link' => 'www.jobboardspro.com',
+            'rang' => 1,
+            'show_rec' => 1
+        ];
+
+        $response = $this->client->post('/api/news', [
+            'body' => json_encode($data)
+        ]);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->asserter()->assertResponsePropertiesExist($response, array(
+            'type',
+            'title',
+            'errors',
+        ));
+        $this->asserter()->assertResponsePropertyExists($response, 'errors.title');
+        $this->asserter()->assertResponsePropertyEquals($response, 'errors.title[0]', 'Please enter a title');
+        $this->asserter()->assertResponsePropertyDoesNotExist($response, 'errors.text');
+        $this->assertEquals('application/problem+json', $response->getHeader('Content-Type')[0]);
+    }
+
+    public function testInvalidJson()
+    {
+        $invalidBody = <<<EOF
+
+    "rang" : 1
+}
+EOF;
+        $response = $this->client->post('/api/news', [
+            'body' => $invalidBody
+        ]);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->asserter()->assertResponsePropertyEquals($response, 'type', 'invalid_body_format');
+    }
+
+    public function test404Exception()
+    {
+        $response = $this->client->get('/api/news/tralala');
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('application/problem+json', $response->getHeader('Content-Type')[0]);
+        $this->asserter()->assertResponsePropertyEquals($response, 'type', 'about:blank');
+        $this->asserter()->assertResponsePropertyEquals($response, 'title', 'Not Found');
+        $this->asserter()->assertResponsePropertyEquals($response, 'detail', 'No news with id: tralala');
     }
 
 }

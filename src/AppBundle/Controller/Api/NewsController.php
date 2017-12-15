@@ -8,7 +8,6 @@ use AppBundle\Form\NewsType;
 use AppBundle\Form\UpdateNewsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,9 +25,9 @@ class NewsController extends BaseController
         $form = $this->createForm(NewsType::class, $news);
         $this->processForm($request, $form);
 
-        //if (!$form->isValid()) {
-            //$this->throwApiProblemValidationException($form);
-        //}
+        if (!$form->isValid()) {
+            $this->throwApiProblemValidationException($form);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($news);
@@ -106,6 +105,10 @@ class NewsController extends BaseController
 
         $form = $this->createForm(UpdateNewsType::class, $news);
         $this->processForm($request, $form);
+
+        if (!$form->isValid()) {
+            $this->throwApiProblemValidationException($form);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($news);

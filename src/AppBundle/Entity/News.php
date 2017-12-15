@@ -4,12 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * News
  *
  * @ORM\Table(name="news")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NewsRepository")
  * @Serializer\ExclusionPolicy("all")
  *
  */
@@ -20,6 +21,7 @@ class News
      *
      * @ORM\Column(name="title", type="string", length=500, nullable=false)
      * @Serializer\Expose
+     * @Assert\NotBlank(message="Please enter a title")
      */
     private $title;
 
@@ -28,6 +30,7 @@ class News
      *
      * @ORM\Column(name="text", type="string", length=5000, nullable=false)
      * @Serializer\Expose
+     * @Assert\NotBlank(message="Please enter a text")
      */
     private $text;
 

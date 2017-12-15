@@ -4,6 +4,11 @@ parameters:
     #parameter_name: value
 
 services:
+    api_exception_subscriber:
+            class: AppBundle\EventListener\ApiExceptionSubscriber
+            arguments: []
+            tags:
+                - { name: kernel.event_subscriber }
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
