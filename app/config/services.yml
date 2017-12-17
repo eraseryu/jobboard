@@ -4,11 +4,6 @@ parameters:
     #parameter_name: value
 
 services:
-    api_exception_subscriber:
-            class: AppBundle\EventListener\ApiExceptionSubscriber
-            arguments: []
-            tags:
-                - { name: kernel.event_subscriber }
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
@@ -33,6 +28,12 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+
+    # custom subscriber for handling API exceptions
+    # and transform to expected json response
+    AppBundle\EventListener\ApiExceptionSubscriber:
+        arguments:
+            $debug: '%kernel.debug%'
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
