@@ -2,6 +2,7 @@
 
 namespace AppBundle\Test;
 
+use AppBundle\Entity\Jobs;
 use AppBundle\Entity\News;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
@@ -275,21 +276,6 @@ class ApiTestCase extends KernelTestCase
         return $headers;
     }
 
-    protected function createNews(array $data)
-    {
-        $accessor = PropertyAccess::createPropertyAccessor();
-        $news = new News();
-
-        foreach ($data as $key => $value) {
-            $accessor->setValue($news, $key, $value);
-        }
-
-        $this->getEntityManager()->persist($news);
-        $this->getEntityManager()->flush();
-
-        return $news;
-    }
-
     /**
      * @return ResponseAsserter
      */
@@ -321,6 +307,36 @@ class ApiTestCase extends KernelTestCase
     protected function adjustUri($uri)
     {
         return '/app_test.php'.$uri;
+    }
+
+    /**
+     * Method to fill data into db for testing purposes
+     *
+     * @param string $entityName
+     * @param array $data
+     * @return Jobs|News
+     */
+    protected function creteDbData(string $entityName, array $data)
+    {
+        switch ($entityName) {
+            case "News":
+                $entityClass = new News();
+                break;
+            case "Jobs":
+                $entityClass = new Jobs();
+                break;
+
+        }
+
+        $accessor = PropertyAccess::createPropertyAccessor();
+        foreach ($data as $key => $value) {
+            $accessor->setValue($entityClass, $key, $value);
+        }
+
+        $this->getEntityManager()->persist($entityClass);
+        $this->getEntityManager()->flush();
+
+        return $entityClass;
     }
 
 }

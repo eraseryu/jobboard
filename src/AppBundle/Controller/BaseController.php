@@ -10,7 +10,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\ApiProblem;
 use AppBundle\Api\ApiProblemException;
+use AppBundle\Entity\Jobs;
 use AppBundle\Entity\News;
+use AppBundle\Repository\JobRepository;
 use AppBundle\Repository\NewsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\Serializer\SerializationContext;
@@ -26,6 +28,14 @@ abstract class BaseController extends Controller
     protected function getNewsRepository()
     {
         return $this->getDoctrine()->getRepository('AppBundle:News');
+    }
+
+    /**
+     * @return JobRepository
+     */
+    protected function getJobsRepository()
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:Jobs');
     }
 
     protected function createApiResponse($data, $statusCode = 200)

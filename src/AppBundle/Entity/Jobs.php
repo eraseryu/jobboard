@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Jobs
  *
  * @ORM\Table(name="jobs")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\JobRepository")
  * @ORM\Entity
  */
 class Jobs
@@ -30,6 +31,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="job_category", type="smallint", nullable=false)
+     * @ORM\ManyToOne(targetEntity="JobCategories")
      */
     private $jobCategory;
 
@@ -175,6 +177,371 @@ class Jobs
      */
     private $id;
 
+
+    public function __construct()
+    {
+        $this->dateUpdated = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return int
+     */
+    public function getJobCategory()
+    {
+        return $this->jobCategory;
+    }
+
+    /**
+     * @param int $jobCategory
+     */
+    public function setJobCategory(int $jobCategory)
+    {
+        $this->jobCategory = $jobCategory;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEmployeeType()
+    {
+        return $this->employeeType;
+    }
+
+    /**
+     * @param int $employeeType
+     */
+    public function setEmployeeType(int $employeeType)
+    {
+        $this->employeeType = $employeeType;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPositionType()
+    {
+        return $this->positionType;
+    }
+
+    /**
+     * @param int $positionType
+     */
+    public function setPositionType(int $positionType)
+    {
+        $this->positionType = $positionType;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExperienceLevel()
+    {
+        return $this->experienceLevel;
+    }
+
+    /**
+     * @param int $experienceLevel
+     */
+    public function setExperienceLevel(int $experienceLevel)
+    {
+        $this->experienceLevel = $experienceLevel;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSchoolLevel()
+    {
+        return $this->schoolLevel;
+    }
+
+    /**
+     * @param int $schoolLevel
+     */
+    public function setSchoolLevel(int $schoolLevel)
+    {
+        $this->schoolLevel = $schoolLevel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalary()
+    {
+        return $this->salary;
+    }
+
+    /**
+     * @param string $salary
+     */
+    public function setSalary(string $salary)
+    {
+        $this->salary = $salary;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param int $country
+     */
+    public function setCountry(int $country)
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param int $state
+     */
+    public function setState(int $state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param int $city
+     */
+    public function setCity(int $city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCompanyId()
+    {
+        return $this->companyId;
+    }
+
+    /**
+     * @param int $companyId
+     */
+    public function setCompanyId(int $companyId)
+    {
+        $this->companyId = $companyId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactEmail()
+    {
+        return $this->contactEmail;
+    }
+
+    /**
+     * @param string $contactEmail
+     */
+    public function setContactEmail(string $contactEmail)
+    {
+        $this->contactEmail = $contactEmail;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpiresAfter()
+    {
+        return $this->expiresAfter;
+    }
+
+    /**
+     * @param int $expiresAfter
+     */
+    public function setExpiresAfter(int $expiresAfter)
+    {
+        $this->expiresAfter = $expiresAfter;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * @return int
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews(int $views)
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFeatured()
+    {
+        return $this->featured;
+    }
+
+    /**
+     * @param bool $featured
+     */
+    public function setFeatured(bool $featured)
+    {
+        $this->featured = $featured;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNewRecord()
+    {
+        return $this->newRecord;
+    }
+
+    /**
+     * @param bool $newRecord
+     */
+    public function setNewRecord(bool $newRecord)
+    {
+        $this->newRecord = $newRecord;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param \DateTime $dateCreated
+     */
+    public function setDateCreated(\DateTime $dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
+    }
+
+    /**
+     * @param \DateTime $dateUpdated
+     */
+    public function setDateUpdated(\DateTime $dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDatePosted()
+    {
+        return $this->datePosted;
+    }
+
+    /**
+     * @param \DateTime $datePosted
+     */
+    public function setDatePosted(\DateTime $datePosted)
+    {
+        $this->datePosted = $datePosted;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateExpired()
+    {
+        return $this->dateExpired;
+    }
+
+    /**
+     * @param \DateTime $dateExpired
+     */
+    public function setDateExpired(\DateTime $dateExpired)
+    {
+        $this->dateExpired = $dateExpired;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
 }
 

@@ -47,7 +47,7 @@ class NewsControllerTest extends ApiTestCase
         ];
 
         /** @var News $news */
-        $news = $this->createNews($data);
+        $news = $this->creteDbData('News', $data);
         $id = $news->getId();
 
         $response = $this->client->get('/api/news/' . $id);
@@ -65,7 +65,8 @@ class NewsControllerTest extends ApiTestCase
 
     public function testGETNewsCollection()
     {
-        $this->createNews(
+        $this->creteDbData(
+            'News',
             [
                 'title' => 'Great news everybody',
                 'text' => 'This is a great story.',
@@ -76,7 +77,8 @@ class NewsControllerTest extends ApiTestCase
             ]
         );
 
-        $this->createNews(
+        $this->creteDbData(
+            'News',
             [
                 'title' => 'This is cool title',
                 'text' => 'Text should be long',
@@ -98,7 +100,8 @@ class NewsControllerTest extends ApiTestCase
     public function testPUT()
     {
         /** @var News $news */
-        $news = $this->createNews(
+        $news = $this->creteDbData(
+            'News',
             [
                 'title' => 'Great news everybody',
                 'text' => 'This is a great story.',
@@ -129,7 +132,8 @@ class NewsControllerTest extends ApiTestCase
     public function testPATCH()
     {
         /** @var News $news */
-        $news = $this->createNews(
+        $news = $this->creteDbData(
+            'News',
             [
                 'title' => 'Great news everybody',
                 'text' => 'This is a great story.',
@@ -157,7 +161,8 @@ class NewsControllerTest extends ApiTestCase
     public function testDELETE()
     {
         /** @var News $news */
-        $news = $this->createNews(
+        $news = $this->creteDbData(
+            'News',
             [
                 'title' => 'Great news everybody',
                 'text' => 'This is a great story.',
