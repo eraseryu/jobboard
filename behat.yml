@@ -1,0 +1,6 @@
+default:
+    autoload:
+        '': %paths.base%/features/API
+    suites:
+        default:
+            contexts: [FeatureContext, ApiFeatureContext]
