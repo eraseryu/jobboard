@@ -10,6 +10,15 @@ class JobRepository extends EntityRepository
 {
     /**
      * @param  integer $id
+     * @return News
+     */
+    public function findOneById($id)
+    {
+        return $this->findOneBy(array('id' => $id));
+    }
+
+    /**
+     * @param  integer $id
      * @return Jobs
      */
     public function findOneQueryBuilder($id)
