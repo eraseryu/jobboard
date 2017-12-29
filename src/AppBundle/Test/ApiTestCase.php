@@ -2,6 +2,7 @@
 
 namespace AppBundle\Test;
 
+use AppBundle\Entity\JobCategories;
 use AppBundle\Entity\Jobs;
 use AppBundle\Entity\News;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -36,6 +37,8 @@ class ApiTestCase extends KernelTestCase
     private $formatterHelper;
 
     private $responseAsserter;
+
+    private $jobCategory;
 
     /**
      * @var Client
@@ -77,6 +80,10 @@ class ApiTestCase extends KernelTestCase
         self::$history = array();
 
         $this->purgeDatabase();
+
+        //insert job related data to db
+        //job category, country, state, position types ...
+        $this->prepareJobTestData();
     }
 
     /**
@@ -325,7 +332,9 @@ class ApiTestCase extends KernelTestCase
             case "Jobs":
                 $entityClass = new Jobs();
                 break;
-
+            case "JobCategories":
+                $entityClass = new JobCategories();
+                break;
         }
 
         $accessor = PropertyAccess::createPropertyAccessor();
@@ -337,6 +346,27 @@ class ApiTestCase extends KernelTestCase
         $this->getEntityManager()->flush();
 
         return $entityClass;
+    }
+
+    protected function prepareJobTestData()
+    {
+        /** @var JobCategories $jobCategory */
+        $jobCategory = $this->creteDbData(
+            'JobCategories',
+            [
+                'name' => 'IT Manager',
+                'featured' => 0
+            ]
+        );
+
+        $this->jobCategory = $jobCategory;
+    }
+
+    public function getTestData()
+    {
+        return [
+            'jobCategory' => $this->jobCategory
+        ];
     }
 
 }

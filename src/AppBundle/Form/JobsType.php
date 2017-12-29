@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\JobCategories;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,7 +22,9 @@ class JobsType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('job_category', IntegerType::class)
+            ->add('job_category',  EntityType::class, [
+                'class' => JobCategories::class
+            ])
             ->add('employee_type', IntegerType::class)
             ->add('position_type', IntegerType::class)
             ->add('experience_level', IntegerType::class)

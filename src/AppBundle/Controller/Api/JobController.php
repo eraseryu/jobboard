@@ -108,7 +108,18 @@ class JobController extends BaseController
      */
     public function showAction($id)
     {
+        $job =  $this->getJobsRepository()->findOneQueryBuilder($id);
 
+        if (!$job) {
+            throw $this->createNotFoundException(sprintf(
+                'No job with id: %s',
+                $id
+            ));
+        }
+
+        $response = $this->createApiResponse($job, 200);
+
+        return $response;
     }
 
     /**
@@ -117,6 +128,10 @@ class JobController extends BaseController
      */
     public function listAction()
     {
+        $jobs = [];
+        $jobs['items'] = $this->getJobsRepository()->findAll();
+        $response = $this->createApiResponse($jobs, 200);
 
+        return $response;
     }
 }

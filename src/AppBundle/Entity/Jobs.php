@@ -3,13 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Jobs
  *
  * @ORM\Table(name="jobs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\JobRepository")
- * @ORM\Entity
+ * @Serializer\ExclusionPolicy("all")
  */
 class Jobs
 {
@@ -17,6 +18,7 @@ class Jobs
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=50, nullable=false)
+     * @Serializer\Expose
      */
     private $title;
 
@@ -24,14 +26,16 @@ class Jobs
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=500, nullable=false)
+     * @Serializer\Expose
      */
     private $description;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="job_category", type="smallint", nullable=false)
-     * @ORM\ManyToOne(targetEntity="JobCategories")
+     * @ORM\ManyToOne(targetEntity="JobCategories", inversedBy="job")
+     * @ORM\JoinColumn(nullable=false)
+     * @Serializer\Expose
      */
     private $jobCategory;
 
@@ -39,6 +43,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="employee_type", type="smallint", nullable=false)
+     * @Serializer\Expose
      */
     private $employeeType;
 
@@ -46,6 +51,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="position_type", type="smallint", nullable=false)
+     * @Serializer\Expose
      */
     private $positionType;
 
@@ -53,6 +59,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="experience_level", type="integer", nullable=false)
+     * @Serializer\Expose
      */
     private $experienceLevel;
 
@@ -60,6 +67,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="school_level", type="integer", nullable=false)
+     * @Serializer\Expose
      */
     private $schoolLevel;
 
@@ -67,6 +75,7 @@ class Jobs
      * @var string
      *
      * @ORM\Column(name="salary", type="decimal", precision=10, scale=0, nullable=false)
+     * @Serializer\Expose
      */
     private $salary;
 
@@ -74,6 +83,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="country", type="integer", nullable=false)
+     * @Serializer\Expose
      */
     private $country;
 
@@ -81,6 +91,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="state", type="integer", nullable=false)
+     * @Serializer\Expose
      */
     private $state;
 
@@ -88,6 +99,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="city", type="integer", nullable=false)
+     * @Serializer\Expose
      */
     private $city = '0';
 
@@ -95,6 +107,7 @@ class Jobs
      * @var integer
      *
      * @ORM\Column(name="company_id", type="integer", nullable=false)
+     * @Serializer\Expose
      */
     private $companyId;
 
@@ -102,6 +115,7 @@ class Jobs
      * @var string
      *
      * @ORM\Column(name="contact_email", type="string", length=100, nullable=false)
+     * @Serializer\Expose
      */
     private $contactEmail;
 
@@ -130,6 +144,7 @@ class Jobs
      * @var boolean
      *
      * @ORM\Column(name="featured", type="boolean", nullable=true)
+     * @Serializer\Expose
      */
     private $featured = '0';
 
@@ -165,6 +180,7 @@ class Jobs
      * @var \DateTime
      *
      * @ORM\Column(name="date_expired", type="datetime", nullable=true)
+     * @Serializer\Expose
      */
     private $dateExpired;
 
@@ -174,6 +190,7 @@ class Jobs
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
      */
     private $id;
 
@@ -216,7 +233,7 @@ class Jobs
     }
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getJobCategory()
     {
@@ -224,9 +241,9 @@ class Jobs
     }
 
     /**
-     * @param int $jobCategory
+     * @param mixed $jobCategory
      */
-    public function setJobCategory(int $jobCategory)
+    public function setJobCategory($jobCategory)
     {
         $this->jobCategory = $jobCategory;
     }

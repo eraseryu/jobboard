@@ -12,9 +12,16 @@ class JobRepository extends EntityRepository
      * @param  integer $id
      * @return Jobs
      */
-    public function findOneById($id)
+    public function findOneQueryBuilder($id)
     {
-        return $this->findOneBy(array('id' => $id));
+        $qb = $this->createQueryBuilder('job')
+            ->andWhere('job.id = :id')
+            ->join('job.jobCategory', 'jc')
+            ->addSelect('jc')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $qb->getOneOrNullResult();
     }
 
 }
