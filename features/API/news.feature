@@ -14,5 +14,5 @@ Feature: News
         "show_rec": 1
       }
       """
-    When I request "POST /api/news"
+    When I request "POST app_test.php/api/news"
     Then the response status code should be 201
