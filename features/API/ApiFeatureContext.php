@@ -92,7 +92,7 @@ class ApiFeatureContext implements Context
     public function __construct()
     {
         $this->client = new Client([
-            'base_uri' => 'http://localhost:8000'
+            'base_uri' => 'http://localhost:8000/app_test.php/'
         ]);
     }
     /**
